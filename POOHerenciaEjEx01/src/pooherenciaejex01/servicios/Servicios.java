@@ -37,6 +37,7 @@ public class Servicios {
     Scanner leer = new Scanner(System.in);
     Alquiler alquiler1 = new Alquiler();
     Barco barcoElegido = new Barco();
+    Date fechaDevolucion,fechaAlquiler;
     ArrayList<Barco> listaBarcos = new ArrayList<>();
     ArrayList<Alquiler> listaAlquileres = new ArrayList<>();
     
@@ -66,7 +67,7 @@ public class Servicios {
         mes = leer.nextInt();
         System.out.print("Año : ");
         anio = leer.nextInt();
-        Date fechaAlquiler = new Date(anio-1900, mes-1, dia);
+        fechaAlquiler = new Date(anio-1900, mes-1, dia);
         System.out.println("Ingrese la fecha de devolución....... ");
         System.out.print("Día : ");
         dia = leer.nextInt();
@@ -74,16 +75,69 @@ public class Servicios {
         mes = leer.nextInt();
         System.out.print("Año : ");
         anio = leer.nextInt();
-        Date fechaDevolucion = new Date(anio-1900, mes-1, dia);
+        fechaDevolucion = new Date(anio-1900, mes-1, dia);
         System.out.print("Ingrese la posición de amarre.......: ");
         String posicionAmarre = leer.next();
-        System.out.print("Seleccione el barco a alquilar......: ");
+        System.out.println("");
+        System.out.println("Seleccione el barco a alquilar.......");
         listaBarcos();
+        System.out.println("Número de barco...: ");
         opcion = leer.nextInt();
-        barcoElegido = listaBarcos.get(opcion);
+        barcoElegido = listaBarcos.get(opcion-1);
+        listaBarcos.remove(opcion-1);
         alquiler1 = new Alquiler(nombre, documento, fechaAlquiler, fechaDevolucion, posicionAmarre, barcoElegido);
+        calculoAlquiler();
         return alquiler1;
     }
+    
+    public void calculoAlquiler(){
+// Un alquiler se calcula multiplicando el número de días de ocupación
+// (calculado con la fecha de alquiler y devolución), por un valor módulo de
+// cada barco (obtenido simplemente multiplicando por 10 los metros de eslora).
+// En los barcos de tipo especial el módulo de cada barco se calcula sacando el
+// módulo normal y sumándole el atributo particular de cada barco. En los
+// veleros se suma el número de mástiles, en los barcos a motor se le suma la
+// potencia en CV y en los yates se suma la potencia en CV y el número de
+// camarotes.
+        System.out.println("");
+        System.out.println("- - - - Calculo de alquiler - - - -");
+        System.out.println("");
+        long diasAlquiler = diasEntreDosFechas(fechaAlquiler, fechaDevolucion);
+        double modulo = barcoElegido.getEslora()*10;
+        double moduloEspecial = 0;
+
+        if (barcoElegido instanceof BarcosLujo) {
+            BarcosLujo barcoAux = (BarcosLujo) barcoElegido;
+            moduloEspecial = (barcoAux.getCvBarcoLujo()+barcoAux.getCamarotes());
+            //System.out.println("" + barcoAux.getCvBarcoLujo() + " " + barcoAux.getCamarotes());    
+        }
+        if (barcoElegido instanceof BarcosMotor) {
+            BarcosMotor barcoAux = (BarcosMotor) barcoElegido;
+            moduloEspecial = (barcoAux.getCvBarcoMotor());
+            //System.out.println("" + barcoAux.getCvBarcoMotor());    
+        }
+        if (barcoElegido instanceof BarcosVeleros) {
+            BarcosVeleros barcoAux = (BarcosVeleros) barcoElegido;
+            moduloEspecial = (barcoAux.getMastiles());
+            //System.out.println("" + barcoAux.getMastiles());    
+        }
+        double alquiler = (modulo + moduloEspecial) * diasAlquiler;
+        System.out.println("Dias de alquiler .....: " + diasAlquiler);
+        System.out.println("Módulo ...............: " + modulo);
+        System.out.println("Módulo especial ......: " + moduloEspecial);
+        System.out.println("Total de alquiler ....: " + alquiler);
+        System.out.println("");
+    }
+    
+    public static long diasEntreDosFechas(Date fechaAlquiler, Date fechaDevolucion){
+     long startTime = fechaAlquiler.getTime() ;
+     long endTime = fechaDevolucion.getTime();
+     long diasDesde = (long) Math.floor(startTime / (1000*60*60*24)); // convertimos a dias, para que no afecten cambios de hora 
+     long diasHasta = (long) Math.floor(endTime / (1000*60*60*24)); // convertimos a dias, para que no afecten cambios de hora
+     long dias = diasHasta - diasDesde;
+     return dias;
+    }
+    
     
     public ArrayList<Barco> altaBarcos(){
         
@@ -105,7 +159,7 @@ public class Servicios {
         for (int i = 0; i < listaBarcos.size(); i++) {
             System.out.println(" " + (i+1) + "- " + listaBarcos.get(i));   
         }
-        System.out.println("- - - - - - - - - - - - - - - - - ");
+        System.out.println(" ");
     }
     
     public void listaAlquileres(){
@@ -113,12 +167,12 @@ public class Servicios {
             for (int i = 0; i < listaAlquileres.size(); i++) {
                 System.out.println(" " + (i+1) + "- " +  listaAlquileres.get(i));          
             }
-        System.out.println("- - - - - - - - - - - - - - - - - - ");
+        System.out.println(" ");
     }
            
     public void menuAlquiler(){
         do {
-            System.out.println("- - - - Alquiler de barcos - - - - ");
+            System.out.println("- - - - - Menu Principal - - - - -");
             System.out.println(" 1 - Alta de alquiler ");
             System.out.println(" 2 - Baja de alquiler ");
             System.out.println(" 3 - Listar alquileres ");
@@ -139,13 +193,19 @@ public class Servicios {
                     }
                     break;
                 case 2:     // Baja de alquiler
-                    
-//                    for (Map.Entry<String, Double> aux : mapaProductos.entrySet()) {
-//                        String key = aux.getKey();
-//                        Double value = aux.getValue();
-//                        System.out.println("   " + key + " $ " + value);
-//                    }
-//                    System.out.println("");
+                    continuar = true;
+                    System.out.println("- - - - - Baja de alquiler - - - - - -");
+                    listaAlquileres(); 
+                    while (continuar) {
+                        System.out.print("Ingrese el número de alquiler: ");
+                        opcion = leer.nextInt();
+                        barcoElegido = listaAlquileres.get(opcion-1).getBarco();
+                        listaBarcos.add(barcoElegido);
+                        listaAlquileres.remove(opcion-1);
+                        System.out.print("Desea dar de baja otro alquiler? S/N ");
+                        String respuesta = leer.next();
+                        continuar = respuesta.equalsIgnoreCase("s");
+                    }
                     break;
                 case 3:     // Listar alquileres
                     listaAlquileres();
@@ -158,13 +218,8 @@ public class Servicios {
                     listaBarcos(); 
                     while (continuar) {
                         System.out.print("Ingrese el número del barco: ");
-                        int numeroBarco = leer.nextInt();
-//                      if (mapaProductos.containsKey(keyProducto)) {
-//                          mapaProductos.remove(keyProducto);
-//                          System.out.println("Se eliminó el producto: " + keyProducto);
-//                      } else {
-//                          System.out.println("No se encontró el producto: " + keyProducto);
-//                      }
+                        opcion = leer.nextInt();
+                        listaBarcos.remove(opcion-1);
                         System.out.print("Desea borrar otro barco? S/N ");
                         String respuesta = leer.next();
                         continuar = respuesta.equalsIgnoreCase("s");

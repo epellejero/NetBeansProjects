@@ -28,7 +28,7 @@ public class POOHerenciaEjEx01 {
     public static void main(String[] args) {
         
         Servicios servicio = new Servicios();
-        
+        servicio.altaBarcos();
         servicio.menuAlquiler();
        
     }
