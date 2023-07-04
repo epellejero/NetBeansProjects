@@ -71,13 +71,13 @@ public class Polideportivo extends Edificio{
         return "Polideportivo{" + "nombre=" + nombre + ", tipoInstalacion=" + tipoInstalacion + '}';
     }
     
-    @Override
+    //@Override
     public int calcularSuperficie(int ancho, int largo){
         int superficie = ancho * largo;
         return superficie;
     }
 
-    @Override
+    //@Override
     public int calcularVolumen(int ancho, int largo, int alto){
         int volumen = ancho * largo * alto;
         return volumen;

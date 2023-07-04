@@ -38,7 +38,7 @@ import servicios.PersonaServicios;
 
 public class POOEj07 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         int pesoIdeal=0,pesoBajo=0,sobrePeso=0;
         int mayores=0,menores=0;
         PersonaServicios ps = new PersonaServicios();
@@ -67,12 +67,17 @@ public class POOEj07 {
                     break;
             }
             // calculo mayores de edad 
-            if (ps.esMayorDeEdad(vectorPersonas[i])){
-                mayores++;
+            try {
+                if (ps.esMayorDeEdad(vectorPersonas[i])){
+                    mayores++;
+                }
+                else {
+                    menores++;
+                }    
+            } catch (NullPointerException psException) {
+                System.out.println("Error: edad -> null ");
             }
-            else {
-                menores++;
-            }     
+                 
         }
         System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - -");
         System.out.print("Mayores de edad: " + mayores + "   ");

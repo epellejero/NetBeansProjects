@@ -53,7 +53,7 @@ public class PersonaServicios {
         return retorno;
     }
     
-    public boolean esMayorDeEdad(Persona p1){
+    public boolean esMayorDeEdad(Persona p1) throws Exception {
         boolean mayorDeEdad = true;
         if (p1.getEdad() < 21){
             mayorDeEdad = false;

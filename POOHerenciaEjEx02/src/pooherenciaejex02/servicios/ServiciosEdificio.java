@@ -35,7 +35,7 @@ import pooherenciaejex02.entidades.Edificio;
 public class ServiciosEdificio {
     
     Scanner leer = new Scanner(System.in);
-    Edificio e1 = new Edificio();
+    Edificio e1;
     
     
     public void altaEdificio(){
