@@ -61,7 +61,7 @@ public class AutorServicios {
         }
     }
     
-    public Autor buscarAutor(String id) {
+    public Autor buscarAutor(Integer id) {
         Autor autor = em.find(Autor.class, id);
         return autor;
     }
@@ -77,7 +77,7 @@ public class AutorServicios {
     public void modificarAutor() {
         consultarAutores();
         System.out.print("Ingrese el ID del autor : ");
-        String id = leer.next().toUpperCase();
+        int id = leer.nextInt();
         Autor autor = em.find(Autor.class, id);
         System.err.println(" ");
         System.out.print("Modifique el nombre (" + autor.getNombre() + ") : ");
@@ -94,7 +94,7 @@ public class AutorServicios {
         continuar = true;
         while (continuar){
             System.out.print("Ingrese el ID del autor : ");
-            String id = leer.next();
+            int id = leer.nextInt();
             Autor autor = em.find(Autor.class, id);        
             System.out.println("                                      ");
             System.out.println("ID    AUTOR                           ");
@@ -102,16 +102,22 @@ public class AutorServicios {
             System.out.println(autor.getId() + " - " + autor.getNombre()); 
             System.out.println("                                      ");
             
-            System.out.print("Desea eliminarlo de forma definitiva? S/N ");
-            String definitiva = leer.next().toUpperCase();
+            autor.setAlta(false);
             em.getTransaction().begin();
-            if (definitiva.equalsIgnoreCase("S")){
-               em.remove(autor);
-            }else{
-                autor.setAlta(false);
-                em.merge(autor);    
-            }
+            em.merge(autor);
             em.getTransaction().commit();
+            
+//            System.out.print("Desea eliminarlo de forma definitiva? S/N ");
+//            String definitiva = leer.next().toUpperCase();
+//            autor.setAlta(false);
+            
+//           em.getTransaction().begin();
+//            if (definitiva.equalsIgnoreCase("S")){
+//               em.remove(autor);            
+//            }else{
+//               em.merge(autor);
+//            }
+//            em.getTransaction().commit();
             
             System.out.print("Desea eliminar otro autor? S/N ");
             String respuesta = leer.next();

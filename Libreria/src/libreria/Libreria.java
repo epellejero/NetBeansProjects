@@ -5,8 +5,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import libreria.servicios.AutorServicios;
+import libreria.servicios.ClienteServicios;
 import libreria.servicios.EditorialSericios;
 import libreria.servicios.LibroServicios;
+import libreria.servicios.PrestamoServicios;
 
 public class Libreria {
 
@@ -21,6 +23,9 @@ public class Libreria {
         AutorServicios autorServicios = new AutorServicios();
         EditorialSericios editorialServicios = new EditorialSericios();
         LibroServicios libroServicios = new LibroServicios();
+        ClienteServicios clienteServicios = new ClienteServicios();
+        PrestamoServicios prestamoServicios = new PrestamoServicios();
+        
         
         try {
             int opcion;
@@ -145,10 +150,10 @@ public class Libreria {
                                 libroServicios.consultarLibrosTitulo();
                                 break;
                             case 4:     // Consulta Libros x autor
-                                //libroServicios.consultarLibros();
+                                libroServicios.consultarLibrosAutor();
                                 break;
                             case 5:     // Consulta Libros x editorial
-                                //libroServicios.consultarLibros();
+                                libroServicios.consultarLibrosEditorial();
                                 break;    
                             case 6:     // Alta de Libros 
                                 libroServicios.crearLibro();
@@ -174,7 +179,7 @@ public class Libreria {
                         System.out.println("_____________________________________________");
                         System.out.println("                                             ");
                         System.out.println("            1 - Consulta clientes            ");
-                        System.out.println("            2 - Consulta x nombre            ");
+                        System.out.println("            2 - Consulta x documento         ");
                         System.out.println("            3 - Alta                         ");
                         System.out.println("            4 - Modificación                 ");
                         System.out.println("            5 - Baja                         ");
@@ -183,19 +188,19 @@ public class Libreria {
                         opcion = leer.nextInt();
                         switch (opcion) {
                             case 1:     // Consulta Cliente 
-                                //clienteServicios.consultarClientes();
+                                clienteServicios.consultarClientes();
                                 break;
-                            case 2:     // Consulta Cliente x nombre
-                                //clienteServicios.consultarClienteNombre();
+                            case 2:     // Consulta Cliente x documento
+                                clienteServicios.consultarClienteDocumento();
                                 break;    
                             case 3:     // Alta de Cliente 
-                                //clienteServicios.crearCliente();
+                                clienteServicios.crearCliente();
                                 break;
                             case 4:     // Modificación de Cliente
-                                //clienteServicios.modificarCliente();
+                                clienteServicios.modificarCliente();
                                 break;
                             case 5:     // Baja de Cliente
-                                //clienteServicios.bajaCliente();
+                                clienteServicios.bajaCliente();
                                 break;    
                             default:   
                                 break;

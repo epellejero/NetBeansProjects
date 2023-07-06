@@ -11,24 +11,24 @@ public class Editorial implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     private String nombre;
     private Boolean alta;
 
     public Editorial() {
     }
 
-    public Editorial(String id, String nombre, Boolean alta) {
+    public Editorial(Integer id, String nombre, Boolean alta) {
         this.id = id;
         this.nombre = nombre;
         this.alta = alta;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

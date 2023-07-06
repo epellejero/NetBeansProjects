@@ -14,7 +14,7 @@ public class Prestamo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     @Temporal(TemporalType.DATE)
     private Date fechaPrestamo;
     @Temporal(TemporalType.DATE)
@@ -27,7 +27,7 @@ public class Prestamo {
     public Prestamo() {
     }
 
-    public Prestamo(String id, Date fechaPrestamo, Date fechaDevolucion, Libro libro, Cliente cliente) {
+    public Prestamo(Integer id, Date fechaPrestamo, Date fechaDevolucion, Libro libro, Cliente cliente) {
         this.id = id;
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
@@ -35,11 +35,11 @@ public class Prestamo {
         this.cliente = cliente;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

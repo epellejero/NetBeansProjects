@@ -11,7 +11,7 @@ public class Cliente {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     private Long documento;
     private String nombre;
     private String apellido;
@@ -20,7 +20,7 @@ public class Cliente {
     public Cliente() {
     }
 
-    public Cliente(String id, Long documento, String nombre, String apellido, String telefono) {
+    public Cliente(Integer id, Long documento, String nombre, String apellido, String telefono) {
         this.id = id;
         this.documento = documento;
         this.nombre = nombre;
@@ -28,11 +28,11 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -16,6 +16,7 @@ public class LibroServicios {
     EntityManager em = emf.createEntityManager();
     AutorServicios autorServicios = new AutorServicios();
     EditorialSericios editorialSericios = new EditorialSericios();
+    Autor autor = new Autor();
     boolean continuar;
     
     public void crearLibro(){
@@ -27,8 +28,8 @@ public class LibroServicios {
             System.out.println(" Ingrese los siguientes datos para el alta  ");
             System.out.println("____________________________________________");
             System.out.println("                                            ");
-            System.out.print("ISBN                   : ");
-            long isbn = leer.nextLong();
+//            System.out.print("ISBN                   : ");
+//            int isbn = leer.nextInt();
             System.out.print("Titulo                 : ");
             String titulo = leer.next().toUpperCase();
             System.out.print("Año de publicación     : ");
@@ -42,20 +43,20 @@ public class LibroServicios {
         
             autorServicios.consultarAutores();
             System.out.print("Autor del libro (ID)   : ");
-            String idAutor = leer.next();
+            int idAutor = leer.nextInt();
             Autor autor = new Autor();
             autor = autorServicios.buscarAutor(idAutor);
         
             editorialSericios.consultarEditoriales();
             System.out.print("Editorial       (ID)   : ");
-            String idEditorial = leer.next();
+            int idEditorial = leer.nextInt();
             Editorial editorial = new Editorial();
             editorial = editorialSericios.buscarEditorial(idEditorial);
         
             //Libro libro = new Libro(isbn, titulo, anio, ejemplares, ejemplaresPrestados, ejemplaresRestantes, true, autor, editorial);
         
             Libro libro = new Libro();
-            libro.setIsbn(isbn);
+//            libro.setIsbn(isbn);
             libro.setTitulo(titulo);
             libro.setAnio(anio);
             libro.setEjemplares(ejemplares);
@@ -83,7 +84,7 @@ public class LibroServicios {
         System.out.println("______________________________________");
         for (Libro aux : libros) {
             if (aux.getAlta()){
-                System.out.println(aux.getId() + " - " + aux.getTitulo() + " - " + aux.getAnio() 
+                System.out.println(aux.getIsbn() + " - " + aux.getTitulo() + " - " + aux.getAnio() 
                         + " - " + aux.getEjemplares() + " - " + aux.getEjemplaresRestantes()); 
             }
         }        
@@ -98,7 +99,7 @@ public class LibroServicios {
         System.out.println("______________________________________");
         for (Libro aux : libros) {
             if (aux.getAlta() && aux.getIsbn() == isbn){
-                System.out.println(aux.getId() + " - " + aux.getTitulo() + " - " + aux.getAnio()
+                System.out.println(aux.getIsbn() + " - " + aux.getTitulo() + " - " + aux.getAnio()
                 + " - " + aux.getEjemplares() + " - " + aux.getEjemplaresRestantes()); 
             }
         }        
@@ -113,55 +114,70 @@ public class LibroServicios {
         System.out.println("______________________________________");
         for (Libro aux : libros) {
             if (aux.getAlta() && aux.getTitulo().contains(titulo)){
-                System.out.println(aux.getId() + " - " + aux.getTitulo()); 
+                System.out.println(aux.getIsbn() + " - " + aux.getTitulo()); 
             }
         }        
     }
     
-    public void consultarLibrosAutor(Autor autor) {
-        
+    public void consultarLibrosAutor() {
+        Autor autorx = new Autor();
+        int idx; 
         Collection<Libro> libros = em.createQuery("SELECT l FROM Libro l").getResultList();
         autorServicios.consultarAutores();
         System.out.print("Autor del libro (ID)   : ");
-        String idAutor = leer.next();
-        autor = autorServicios.buscarAutor(idAutor); 
-        System.out.println("ID    LIBRO                           ");
-        System.out.println("______________________________________");
+        int id = leer.nextInt();
+        autor = autorServicios.buscarAutor(id); 
+        System.out.println("                                      ");
+        System.out.println("ID     LIBRO  - AUTOR => " + autor.getNombre());
+        System.out.println("                                      ");
         for (Libro aux : libros) {
-            if (aux.getAlta() && aux.getAutor().equals(autor)){
-                System.out.println(aux.getId() + " - " + aux.getTitulo()); 
+//            if (aux.getAlta() && (aux.getAutor() == autor)){
+            autorx = aux.getAutor();
+            idx = autorx.getId();
+            if (aux.getAlta()){
+                if (id == idx){ 
+                    System.out.println(aux.getIsbn() + " - " + aux.getTitulo()); 
+                }
             }
         }        
     }
     
     public void consultarLibrosEditorial() {
         
+        Editorial editorialx = new Editorial();
+        int idx;
         Collection<Libro> libros = em.createQuery("SELECT l FROM Libro l").getResultList();
         editorialSericios.consultarEditoriales();
         System.out.print("Editorial       (ID)   : ");
-        String idEditorial = leer.next();
-        Editorial editorial = editorialSericios.buscarEditorial(idEditorial);
-        System.out.println("ID     LIBRO                          ");
-        System.out.println("______________________________________");
+        int id = leer.nextInt();
+        Editorial editorial = editorialSericios.buscarEditorial(id);
+        System.out.println("                                       ");
+        System.out.println("ID       LIBRO  - EDITORIAL => " + editorial.getNombre());
+        System.out.println("                                       ");
         for (Libro aux : libros) {
-            if (aux.getAlta() && aux.getEditorial().equals(editorial)){
-                System.out.println(aux.getId() + " - " + aux.getTitulo()); 
+//            if (aux.getAlta() && aux.getEditorial().equals(editorial)){
+            editorialx = aux.getEditorial();
+            idx = editorialx.getId();
+            if (aux.getAlta()){
+                if (id == idx){
+                    System.out.println(aux.getIsbn() + " - " + aux.getTitulo());
+                }
             }
         }        
     }
     
-    public Libro buscarLibro(String id) {
+    public Libro buscarLibro(Integer id) {
         Libro libro = em.find(Libro.class, id);
         return libro;
     }
     
     public void modificarLibro() {
         consultarLibros();
-        System.out.print("Ingrese el ID del libro : ");
-        String id = leer.next().toUpperCase();
-        Libro libro = em.find(Libro.class, id);
-        System.out.print("ISBN (" + libro.getIsbn() + ") : ");
-        long isbn = leer.nextLong();
+        System.out.print("Ingrese el ISBN del libro : ");
+        int isbn = leer.nextInt();
+        Libro libro = em.find(Libro.class, isbn);
+//        System.out.print("ISBN (" + libro.getIsbn() + ") : ");
+//        isbn = leer.nextInt();
         System.out.print("Titulo (" + libro.getTitulo() + ") : ");
         String titulo = leer.next().toUpperCase();
         System.out.print("Año de publicación (" + libro.getAnio() + ") : ");
@@ -175,19 +191,19 @@ public class LibroServicios {
         
         autorServicios.consultarAutores();
         System.out.print("Autor del libro (ID)   : ");
-        String idAutor = leer.next();
+        int idAutor = leer.nextInt();
         Autor autor = new Autor();
         autor = autorServicios.buscarAutor(idAutor);
         
         editorialSericios.consultarEditoriales();
         System.out.print("Editorial       (ID)   : ");
-        String idEditorial = leer.next();
+        int idEditorial = leer.nextInt();
         Editorial editorial = new Editorial();
         editorial = editorialSericios.buscarEditorial(idEditorial);
         
         
-        libro = new Libro();
-        libro.setIsbn(isbn);
+        // libro = new Libro();
+        // libro.setIsbn(isbn);
         libro.setTitulo(titulo);
         libro.setAnio(anio);
         libro.setEjemplares(ejemplares);
@@ -207,25 +223,29 @@ public class LibroServicios {
         consultarLibros();
         continuar = true;
         while (continuar){
-            System.out.print("Ingrese el ID del libro : ");
-            String id = leer.next();
-            Libro libro = em.find(Libro.class, id);        
+            System.out.print("Ingrese el ISBN del libro : ");
+            int isbn = leer.nextInt();
+            Libro libro = em.find(Libro.class, isbn);        
             System.out.println("                                      ");
             System.out.println("ID    LIBRO                           ");
             System.out.println("______________________________________");
-            System.out.println(libro.getId() + " - " + libro.getTitulo()); 
+            System.out.println(libro.getIsbn() + " - " + libro.getTitulo()); 
             System.out.println("                                      ");
-            
-            System.out.print("Desea eliminarlo de forma definitiva? S/N ");
-            String definitiva = leer.next().toUpperCase();
+            libro.setAlta(false);
             em.getTransaction().begin();
-            if (definitiva.equalsIgnoreCase("S")){
-               em.remove(libro);
-            }else{
-                libro.setAlta(false);
-                em.merge(libro);    
-            }
+            em.merge(libro);
             em.getTransaction().commit();
+            
+//            System.out.print("Desea eliminarlo de forma definitiva? S/N ");
+//            String definitiva = leer.next().toUpperCase();
+//            em.getTransaction().begin();
+//            if (definitiva.equalsIgnoreCase("S")){
+//               em.remove(libro);
+//            }else{
+//                libro.setAlta(false);
+//                em.merge(libro);    
+//            }
+//            em.getTransaction().commit();
             
             System.out.print("Desea eliminar otro libro? S/N ");
             String respuesta = leer.next();

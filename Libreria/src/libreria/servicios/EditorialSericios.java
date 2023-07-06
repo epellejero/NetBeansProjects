@@ -60,7 +60,7 @@ public class EditorialSericios {
     }
     
         
-    public Editorial buscarEditorial(String id) {
+    public Editorial buscarEditorial(Integer id) {
         Editorial editorial  = em.find(Editorial.class, id);
         return editorial;
     }
@@ -68,7 +68,7 @@ public class EditorialSericios {
     public void modificarEditorial() {
         consultarEditoriales();
         System.out.print("Ingrese el ID de la editorial : ");
-        String id = leer.next().toUpperCase();
+        int id = leer.nextInt();
         Editorial editorial = em.find(Editorial.class, id);
         System.out.println(" ");
         System.out.print("Modifique el nombre (" + editorial.getNombre() + "): ");
@@ -98,7 +98,7 @@ public class EditorialSericios {
         continuar = true;
         while (continuar){
             System.out.print("Ingrese el ID de la editorial : ");
-            String id = leer.next();
+            int id = leer.nextInt();
             Editorial editorial = em.find(Editorial.class, id);        
             System.out.println("                                      ");
             System.out.println("ID    EDITORIAL                       ");
@@ -106,15 +106,20 @@ public class EditorialSericios {
             System.out.println(editorial.getId() + " - " + editorial.getNombre()); 
             System.out.println("                                      ");
             
-            System.out.print("Desea eliminarlo de forma definitiva? S/N ");
-            String definitiva = leer.next().toUpperCase();
+//            System.out.print("Desea eliminarlo de forma definitiva? S/N ");
+//            String definitiva = leer.next().toUpperCase();
+//            em.getTransaction().begin();
+//            if (definitiva.equalsIgnoreCase("S")){
+//               em.remove(editorial);
+//            }else{
+//               editorial.setAlta(false);
+//               em.merge(editorial);    
+//            }
+//            em.getTransaction().commit();
+
+            editorial.setAlta(false);
             em.getTransaction().begin();
-            if (definitiva.equalsIgnoreCase("S")){
-               em.remove(editorial);
-            }else{
-                editorial.setAlta(false);
-                em.merge(editorial);    
-            }
+            em.merge(editorial);    
             em.getTransaction().commit();
             
             System.out.print("Desea eliminar otro libro? S/N ");
