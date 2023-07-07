@@ -1,3 +1,4 @@
+SET GLOBAL time_zone = '-3:00';
 DROP DATABASE IF EXISTS libreria;
 CREATE DATABASE libreria CHARACTER SET utf8mb4;
 USE libreria;
