@@ -42,16 +42,17 @@ public class POOEj07 {
         int pesoIdeal=0,pesoBajo=0,sobrePeso=0;
         int mayores=0,menores=0;
         PersonaServicios ps = new PersonaServicios();
-        Persona p1 = ps.altaPersona();
-        Persona p2 = ps.altaPersona();
-        Persona p3 = ps.altaPersona();
-        Persona p4 = ps.altaPersona();
-        
+        //Persona p1 = ps.altaPersona();
+        Persona p1 = null;
+//        Persona p2 = ps.altaPersona();
+//        Persona p3 = ps.altaPersona();
+//        Persona p4 = ps.altaPersona();
+//        
         Persona [] vectorPersonas = new Persona [4]; 
         vectorPersonas[0] = p1;
-        vectorPersonas[1] = p2;
-        vectorPersonas[2] = p3;
-        vectorPersonas[3] = p4;
+//        vectorPersonas[1] = p2;
+//        vectorPersonas[2] = p3;
+//        vectorPersonas[3] = p4;j
         
         for (int i = 0; i < 4; i++){
              // calculo ICM 
@@ -67,12 +68,21 @@ public class POOEj07 {
                     break;
             }
             // calculo mayores de edad 
-            if (ps.esMayorDeEdad(vectorPersonas[i])){
-                mayores++;
+            
+            try {
+                if (ps.esMayorDeEdad(vectorPersonas[i])){
+                    mayores++;
+                }
+                else {
+                    menores++;
+                }    
+            } catch (NullPointerException e) {
+                System.err.println("Exception atrapada");
+                
+            } finally {
+                System.err.println("Salis de Exeption");
             }
-            else {
-                menores++;
-            }     
+                 
         }
         System.out.println("- - - - - - - - - - - - - - - - - - - - - - - - -");
         System.out.print("Mayores de edad: " + mayores + "   ");

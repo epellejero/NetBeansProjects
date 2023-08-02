@@ -4,7 +4,6 @@ package pooej07.entidades;
 
 
 public class Persona {
-    // Scanner leer = new Scanner(System.in);
     
     private String nombre;
     private int edad;
